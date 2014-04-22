@@ -24,9 +24,7 @@
 	if(!self)
 		return nil;
 
-	NSDistributedNotificationCenter* notificationCenter;
-	notificationCenter = [NSDistributedNotificationCenter defaultCenter];
-	[notificationCenter addObserver:self selector:@selector(daemonCallback:) name:@"FSMONITORD_CALLBACK" object:nil];
+	[[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(daemonCallback:) name:@"FSMONITORD_CALLBACK" object:nil];
 
 	self.typeFilter = FSMonitorEventTypeAll;
 	self.directoryFilter = [NSMutableArray new];
@@ -146,6 +144,7 @@
 }
 
 - (void)dealloc{
+	[[NSDistributedNotificationCenter defaultCenter] removeObserver:self name:@"FSMONITORD_CALLBACK" object:nil];
 	[self.directoryFilter release];
 	[super dealloc];
 }
